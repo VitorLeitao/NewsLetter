@@ -11,6 +11,6 @@ model News {
   id Int      @id @default(autoincrement())
   title      String
   description String
-  date       DateTime
+  date       String
   author     String
 }
