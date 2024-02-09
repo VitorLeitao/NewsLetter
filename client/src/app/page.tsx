@@ -21,6 +21,13 @@ import {
 } from '@/components/ui/form';
 import { getRandomValues } from 'crypto'
 
+
+export default function Home() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      
+    </main>
+
 const formSchema = z.object({
     username: z.string().min(2).max(50),
     password: z.string().min(2).max(50),
@@ -75,5 +82,6 @@ export default function Home() {
     </Form>
       </div>
     </div>
+
   );
 }
