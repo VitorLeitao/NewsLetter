@@ -1,7 +1,9 @@
-import { GraphQLID, GraphQLString } from "graphql";
+import { GraphQLID, GraphQLInt, GraphQLString } from "graphql";
 import { UsersType } from "../TypeDefs/Users";
 import { db } from "../../../lib/db";
+import { MessageType } from "../TypeDefs/Messages";
 
+//CRIAR USUARIO
 export const CREATE_USER ={ 
     type: UsersType,
     args: {
@@ -22,6 +24,7 @@ export const CREATE_USER ={
     },
 };
 
+//MUDAR SENHA
 export const UPDATE_USER_PASSWORD = {
     type: UsersType,
     args: { 
@@ -45,4 +48,41 @@ export const UPDATE_USER_PASSWORD = {
         });
         return updatePassword;
     },
+};
+
+//DELETAR USUARIO
+export const DELETE_USER = {
+    type: MessageType,
+    args: {
+        id: { type: GraphQLInt },
+        password: { type: GraphQLString },
+    },
+    async resolve(parent: any, args: any) {
+        try {
+            const { id, password } = args;
+            const userSelecionado = await db.user.findUnique({
+                where: {
+                    id: id
+                }
+            });
+            //verificar se o usuario existe, senha corresponde
+            if (userSelecionado && userSelecionado.password === password) {
+                // Exclui todas as notícias associadas ao usuário
+                await db.news.deleteMany({
+                    where: { authorId: Number(id) },
+                });
+
+                // Exclui o usuário após excluir todas as notícias associadas
+                await db.user.delete({
+                    where: { id: Number(id) },
+            });
+
+                return { successful: true, message: "successfully deleted" };
+            } else { // se o usario n existir ou senha incorreta
+                return { successful: false, message: "wrong password or user doesn't exist" };
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 };
