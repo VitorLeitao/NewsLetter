@@ -8,16 +8,18 @@ datasource db {
 }
 
 model News {
-  id Int      @id @default(autoincrement())
-  title      String
+  id          Int      @id @default(autoincrement())
+  title       String
   description String
-  date       String
-  author     String
+  date        String
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int   
 }
 
 model User {
-  id Int      @id @default(autoincrement())
-  name      String
-  email String
-  password       String
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String
+  password String
+  news     News[]  
 }
