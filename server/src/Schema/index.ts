@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
-import { CREATE_NEW, DELETE_NEWS } from "./Mutations/News";
+import { CREATE_NEW, DELETE_NEWS, UPDATE_DESCRIPTION, UPDATE_TITLE } from "./Mutations/News";
 import { GET_ALL_NEWS } from "./Queries/News";
 import { GET_ALL_USER } from "./Queries/Users";
 import { CREATE_USER, DELETE_USER, UPDATE_USER_PASSWORD } from "./Mutations/Users";
@@ -19,7 +19,12 @@ const Mutation = new GraphQLObjectType({
       createUser: CREATE_USER,
       deleteNews: DELETE_NEWS,
       updatePassword: UPDATE_USER_PASSWORD,
+
       deleteUser: DELETE_USER,
+
+      updateTitle: UPDATE_TITLE,
+      updateDescription: UPDATE_DESCRIPTION,
+
     },
   });
   
