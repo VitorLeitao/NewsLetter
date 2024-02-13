@@ -22,11 +22,6 @@ import {
 import { getRandomValues } from 'crypto'
 
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      
-    </main>
 
 const formSchema = z.object({
     username: z.string().min(2).max(50),
