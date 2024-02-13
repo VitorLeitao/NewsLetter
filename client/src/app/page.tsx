@@ -1,87 +1,20 @@
-// A pagina inicial vai ser de login
 "use client";
-import Image from 'next/image';
-// Redirecionamento de usuario
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-//import { useToast, toast } from "@/components/ui/use-toast"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Label } from "@/components/ui/label"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormDescription,
-  FormMessage,
-} from '@/components/ui/form';
-import { getRandomValues } from 'crypto'
+import React from 'react';
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import AppLogIn from '@/components/log-in';
+import { createRoot } from "react-dom/client"; 
 
+function Home() {
+  const client = new ApolloClient({
+    uri: "http://localhost:3001/graphql",
+    cache: new InMemoryCache(),
+  });
 
-export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      
-    </main>
-
-const formSchema = z.object({
-    username: z.string().min(2).max(50),
-    password: z.string().min(2).max(50),
-  })
-
-export default function Home() {
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-      password:""
-    },
-  })
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-  }
-  
-  return (
-    <div className="flex justify-center items-center h-screen">
-    <div className="border p-10 shadow-xl rounded-lg bg-white">
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Username" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-      <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex justify-center"><Button type="submit">Submit</Button></div>
-      </form>
-    </Form>
-      </div>
-    </div>
-
+    <ApolloProvider client={client}>
+      <AppLogIn />
+    </ApolloProvider>
   );
 }
+
+export default Home; 
