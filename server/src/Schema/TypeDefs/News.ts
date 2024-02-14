@@ -1,12 +1,19 @@
 import { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLScalarType, GraphQLInt } from "graphql";
+import { UsersType } from "./Users";
+import { db } from "../../../lib/db";
 
 export const NewsType = new GraphQLObjectType({
-  name: "News",
+  name: 'News',
   fields: () => ({
-    id: { type: GraphQLID },
-    title: { type: GraphQLString },
-    description: { type: GraphQLString },
-    date: { type: GraphQLString },
-    author: { type: GraphQLInt }
-  }),
+      id: { type: GraphQLInt },
+      title: { type: GraphQLString },
+      description: { type: GraphQLString },
+      date: { type: GraphQLString },
+      author: { 
+          type: UsersType, // Assumindo que você tenha um UserType definido
+          resolve(news) {
+              return db.user.findUnique({ where: { id: news.authorId } });
+          }
+      },
+  })
 });

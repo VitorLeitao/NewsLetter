@@ -6,11 +6,16 @@ import { SettingsIcon } from "lucide-react";
 import React from "react";
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
-
+import { useRouter } from "next/navigation";
 
 
 export const Navbar = () => {
-    
+    const router = useRouter(); // Hook useRouter para manipulação de rotas  
+
+    const handleLogout = () => {
+        router.push('/');
+    };
+
     return (
         <><nav style={{ background: 'pink', color: 'white', padding: '1rem', height: '70px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', width: '100%' }}>
@@ -31,7 +36,7 @@ export const Navbar = () => {
               <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Perfil</DropdownMenuItem>
-              <DropdownMenuItem>Sair</DropdownMenuItem>
+              <DropdownMenuItem onSelect={handleLogout}>Sair</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
   
