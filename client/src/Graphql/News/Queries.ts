@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
 
-export const getAllNews = gql`
-  query getAllUsers {
-    getAllUsers {
+export const GET_ALL_NEWS = gql`
+  query getAllNews {
+    getAllNews{
       id
       title
       description
       date
-      authorId
+      author
     }
   }
 `;
