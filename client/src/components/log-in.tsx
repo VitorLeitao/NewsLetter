@@ -26,6 +26,7 @@ const schemaLogin = z.object({
 
 export default function AppLogIn() {
 
+  const router = useRouter(); // Inicialize o hook useRouter
   const formLogIn = useForm<z.infer<typeof schemaLogin>>({
     resolver: zodResolver(schemaLogin),
     defaultValues: {
@@ -47,15 +48,14 @@ export default function AppLogIn() {
         }).then(({ data }) => {
           if(data.getUserByName.password === password){
               enviaToast("Senha correta, logando", "name", "#4CAF50", "white");
-              // TODO: Fazer o redirecionamento para proximas paginas 
               localStorage.setItem('idLogado', data.getUserByName.id);
-              //router.push('/nomerota');
+              router.push('/mainPage');
           }else{
               enviaToast("Senha Incorreta", "name", "#FF0000", "white");
           }
         }).catch((error) => {
           enviaToast("Username Incorreto", "name", "#FF0000", "white");
-          //console.log(error);
+          console.log(error);
         });
     }catch(error){
       console.log(error);

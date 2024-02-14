@@ -13,6 +13,14 @@ export const CREATE_USER ={
     },
     async resolve(parent: any, args: any) {
         const { name, email, password } = args; 
+        const existingUser = await db.user.findFirst({
+            where: {
+            name: name,
+            },
+        });
+        if (existingUser) {
+            throw new Error("Já existe um usuario com esse nome");
+        }
         const newUser = await db.user.create({
             data: {
               name: name, 

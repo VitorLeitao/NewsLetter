@@ -3,6 +3,7 @@
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { SettingsIcon } from "lucide-react";
+import { useRouter } from 'next/navigation';
 import React from "react";
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
@@ -10,7 +11,11 @@ import { Inter } from 'next/font/google';
 
 
 export const Navbar = () => {
-    
+  const router = useRouter();
+
+  const handleNavigation = (path) => {
+    router.push(path);
+  };
     return (
         <><nav style={{ background: 'pink', color: 'white', padding: '1rem', height: '70px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', width: '100%' }}>
@@ -32,6 +37,7 @@ export const Navbar = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem>Perfil</DropdownMenuItem>
               <DropdownMenuItem>Sair</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleNavigation('/postar')}>Postar</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
   
