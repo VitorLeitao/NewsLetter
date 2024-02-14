@@ -10,53 +10,59 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useToast, toast } from "@/components/ui/use-toast"
 import { Label } from "@/components/ui/label"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormDescription,
-  FormMessage,
-} from '@/components/ui/form';
-import { gql, useQuery } from '@apollo/client';
+import {Form,FormControl,FormField,FormItem,FormLabel,FormDescription,FormMessage,} from '@/components/ui/form';
+import {Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle,SheetTrigger,} from "@/components/ui/sheet"
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { GET_ALL_USER, GET_USER_BY_NAME } from '@/Graphql/Users/Queries';
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { useLazyQuery } from '@apollo/client';
+import { CREATE_USER } from '@/Graphql/Users/Mutation';
+import AppSignIn from './create-user';
 
-const formSchema = z.object({
+const schemaLogin = z.object({
     username: z.string().min(2).max(50),
     password: z.string().min(2).max(50),
   })
 
 export default function AppLogIn() {
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const formLogIn = useForm<z.infer<typeof schemaLogin>>({
+    resolver: zodResolver(schemaLogin),
     defaultValues: {
       username: "",
       password:""
     },
   })
 
-  const [getUserByName, { called, loading, data, error }] = useLazyQuery(GET_USER_BY_NAME);
+  const [getUserByName, { called, loading, data }] = useLazyQuery(GET_USER_BY_NAME);
 
-  function checkUser(values: z.infer<typeof formSchema>) {
-    getUserByName({
-        variables: {
-          username: values.username
-        }
-      }).then(({ data }) => {
-        if(data.getUserByName.password === values.password){
-            console.log('Senha correta, logando');
-        }else{
-            console.log('dados de login incorretos');
-        }
-      }).catch((error) => {
-        console.log('dados de login incorretos');
-      });
+  const checkUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try{
+      const { username, password } = await formLogIn.getValues();
+      getUserByName({
+          variables: {
+            username: username
+          }
+        }).then(({ data }) => {
+          if(data.getUserByName.password === password){
+              enviaToast("Senha correta, logando", "name", "#4CAF50", "white");
+              // TODO: Fazer o redirecionamento para proximas paginas 
+              localStorage.setItem('idLogado', data.getUserByName.id);
+              //router.push('/nomerota');
+          }else{
+              enviaToast("Senha Incorreta", "name", "#FF0000", "white");
+          }
+        }).catch((error) => {
+          enviaToast("Username Incorreto", "name", "#FF0000", "white");
+          //console.log(error);
+        });
+    }catch(error){
+      console.log(error);
+    }
+    
   }
-  
+
   const enviaToast = (title: string, description: string, backgroundColor: string, color: string) => {
     console.log('Toast enviado:', title, description, backgroundColor, color);
     toast({
@@ -76,10 +82,10 @@ export default function AppLogIn() {
           Login
       </Label>
     <div className="border p-10 shadow-xl rounded-lg bg-white">
-    <Form {...form}>
-        <form onSubmit={form.handleSubmit(checkUser)} className="space-y-8">
+    <Form {...formLogIn}>
+        <form className="space-y-8">
         <FormField
-          control={form.control}
+          control={formLogIn.control}
           name="username"
           render={({ field }) => (
             <FormItem>
@@ -92,7 +98,7 @@ export default function AppLogIn() {
         />
 
       <FormField
-          control={form.control}
+          control={formLogIn.control}
           name="password"
           render={({ field }) => (
             <FormItem>
@@ -103,7 +109,23 @@ export default function AppLogIn() {
             </FormItem>
           )}
         />
-        <div className="flex justify-center"><Button type="submit">Submit</Button></div>
+        
+        <div className="flex justify-center"><Button onClick={checkUser} type="submit">Entrar</Button></div>
+        <div>
+
+
+        {/* Campos para registro e alteração de senha */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <span className="text-blue-500 cursor-pointer underline">
+              Ainda não tenho uma conta
+            </span>
+          </SheetTrigger>
+          <SheetContent side="right">
+              <AppSignIn />
+          </SheetContent>
+        </Sheet>
+        </div>
       </form>
     </Form>
       </div></div>
