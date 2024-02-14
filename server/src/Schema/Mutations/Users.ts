@@ -37,24 +37,28 @@ export const UPDATE_USER_PASSWORD = {
     type: UsersType,
     args: { 
         id: {type: GraphQLID}, //pega o id do usuario que deseja att a senha
+        password: {type: GraphQLString},
         newPassword: { type: GraphQLString },
     },
     async resolve(paent: any, args: any){
-        const {id, newPassword} = args;
+        try{
+        const {id, password, newPassword} = args;
         const existUser = await db.user.findUnique({ 
             where: {id: Number(id)}, //o usuario com esse id existe
         });
 
-        if (!existUser){ //se o usuario n existe, ja acaba aqui
-            throw new Error("User not found");
+        if (existUser && existUser.password === password){ //se o usuario n existe, ja acaba aqui
+            const updatePassword = await db.user.update({
+                where: {id: Number(id)},
+                data: {password: newPassword},
+            });
+            return updatePassword;
+        }else{
+            return {sucessful: false, message: "wrong password"};
         }
-
-        //att senha
-        const updatePassword = await db.user.update({
-            where: {id: Number(id)},
-            data: {password: newPassword},
-        });
-        return updatePassword;
+        }catch(error){
+            console.log(error)
+        }
     },
 };
 

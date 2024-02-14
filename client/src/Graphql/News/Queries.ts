@@ -7,7 +7,10 @@ export const GET_ALL_NEWS = gql`
       title
       description
       date
-      author
+      author {
+        id
+        name
+      }
     }
   }
 `;
