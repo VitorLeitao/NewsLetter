@@ -43,6 +43,7 @@ export default function AppPostNew() {
           authorId: parseInt(await localStorage.getItem('idLogado') || '0', 10)
         }
       }).then(({ data }) => {
+          console.log(data);
           enviaToast("Noticia cadastrada com sucesso", "name", "#4CAF50", "white");
       }).catch((error) => {
         enviaToast("Erro ao cadastrar noticia", "name", "#FF0000", "white");

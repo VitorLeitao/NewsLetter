@@ -7,10 +7,13 @@ export const CREATE_NEW = gql`
       title
       description
       date
-      author
+      author {
+        id
+      }
     }
   }
 `;
+
 
 export const UPDATE_TITLE = gql`
   mutation updateTitle(

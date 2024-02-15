@@ -43,7 +43,7 @@ export const DELETE_NEWS = {
             })
             const autorSelecionado = await db.user.findUnique({
                 where: {
-                    id: newsSelecionada?.authorId
+                    id: newsSelecionada?.authorId || undefined
                 }
             })
             if(autorSelecionado?.password === password){
