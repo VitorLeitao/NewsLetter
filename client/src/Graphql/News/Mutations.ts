@@ -14,6 +14,7 @@ export const CREATE_NEW = gql`
   }
 `;
 
+
 export const UPDATE_TITLE = gql`
   mutation updateTitle(
     $id: Int!
@@ -42,12 +43,10 @@ export const UPDATE_DESCRIPTION = gql`
   }
 `;
 
-/*
 export const DELETE_NEWS = gql`
-  mutation deleteNews($id: Int!, password: String!) {
+  mutation deleteNews($id: Int!, $password: String!) {
     deleteNews(id: $id, password: $password) {
       message
     }
   }
 `;
-*/
