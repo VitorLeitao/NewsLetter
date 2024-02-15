@@ -7,7 +7,9 @@ export const CREATE_NEW = gql`
       title
       description
       date
-      author
+      author {
+        id
+      }
     }
   }
 `;
@@ -40,6 +42,7 @@ export const UPDATE_DESCRIPTION = gql`
   }
 `;
 
+/*
 export const DELETE_NEWS = gql`
   mutation deleteNews($id: Int!, password: String!) {
     deleteNews(id: $id, password: $password) {
@@ -47,3 +50,4 @@ export const DELETE_NEWS = gql`
     }
   }
 `;
+*/
