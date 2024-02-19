@@ -11,6 +11,17 @@ export const GET_USER_BY_NAME = gql`
   }
 `;
 
+export const GET_USER_BY_ID = gql`
+  query getUserById($id: Int!) {
+    getUserById(id: $id) {
+      id
+      name
+      email
+      password
+    }
+  }
+`;
+
 export const GET_ALL_USER = gql`
   query getAllUser {
     getAllUser {
