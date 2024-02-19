@@ -7,19 +7,15 @@ import { useRouter } from 'next/navigation';
 import React from "react";
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
-import { useRouter } from "next/navigation";
 
 
 export const Navbar = () => {
 
-    const router = useRouter(); // Hook useRouter para manipulação de rotas  
-
-    const handleLogout = () => {
-        router.push('/');
-    };
-
-
-  const handleNavigation = (path) => {
+  const router = useRouter(); 
+  const handleNavigation = (path: string, deslog: boolean) => {
+    if(deslog){
+      localStorage.setItem('idLogado', '1');
+    }
     router.push(path);
   };
 
@@ -42,10 +38,10 @@ export const Navbar = () => {
             <DropdownMenuContent>
               <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Perfil</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleNavigation('/perfil', false)}>Perfil</DropdownMenuItem>
 
-              <DropdownMenuItem onSelect={handleLogout}>Sair</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleNavigation('/postar')}>Postar</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleNavigation('/', true)}>Sair</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleNavigation('/postar', false)}>Postar</DropdownMenuItem>
 
             </DropdownMenuContent>
           </DropdownMenu>

@@ -6,13 +6,14 @@ import { GET_ALL_USER, GET_USER_BY_NAME } from "@/Graphql/Users/Queries";
 import { Button } from '@/components/ui/button';
 import client from '../apolloClient';
 import AppLogIn from "@/components/log-in";
-import postNew from "@/components/createNews";
+import AppProfile from "@/components/profile";
+
 
 
 function post() {
   return (
     <ApolloProvider client={client}>
-     <postNew />
+     <AppProfile />
     </ApolloProvider>
     
   );

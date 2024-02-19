@@ -7,7 +7,7 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 function AllNews() {
   const [currentPage, setCurrentPage] = useState(1);
   const newsPerPage = 3; // Número de notícias por página
-
+  
   const { loading, error, data } = useQuery(GET_ALL_NEWS);
 
   if (loading) return <p>Loading...</p>;

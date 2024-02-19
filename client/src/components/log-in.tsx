@@ -49,7 +49,8 @@ export default function AppLogIn() {
           if(data.getUserByName.password === password){
               enviaToast("Senha correta, logando", "name", "#4CAF50", "white");
               localStorage.setItem('idLogado', data.getUserByName.id);
-              router.push('/mainPage');
+              console.log(localStorage.getItem('idLogado'));
+              router.push('/mainpage');
           }else{
               enviaToast("Senha Incorreta", "name", "#FF0000", "white");
           }
